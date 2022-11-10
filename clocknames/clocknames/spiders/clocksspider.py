@@ -7,7 +7,7 @@ import json
 
 def urls_clocks():
     base_url = 'https://www.patek.com/en/collection/'
-    type = ['gondolo']
+    type = ['grand-complications', 'complications', 'calatrava', 'gondolo', 'golden-ellipse', 'nautilus', 'aquanaut', 'twenty4']
     urls = list()
     for t in type:
         urls.append(base_url + t)
