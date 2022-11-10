@@ -7,7 +7,7 @@ import json
 
 def urls_clocks():
     base_url = 'https://www.casio.com/us/watches/casio/'
-    type = ['classic']
+    type = ['classic', 'databank']
     urls = list()
     for t in type:
         urls.append(base_url + t)
@@ -29,8 +29,8 @@ class RelogioSpider(scrapy.Spider):
     clocks = list()
 
     def parse(self, response):
-        for e in response.css('.cmp-product_panel__inner'):
-            clock_to_write = e.css('a::attr(href)').get()
+        for e in response.css('.cmp-product_panel a'):
+            clock_to_write = e.css('::text').get()
             self.clocks.append({'name': clock_to_write})
             yield {'name': clock_to_write}
 
