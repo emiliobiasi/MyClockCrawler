@@ -31,6 +31,10 @@ class RelogioSpider(scrapy.Spider):
         'USER_AGENT': 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
     }
 
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(url=url, callback=self.parse)
+
     def parse(self, response):
         clock_to_write = []
         style_to_write = []
@@ -40,8 +44,8 @@ class RelogioSpider(scrapy.Spider):
             clock_to_write.append(c.css('::text').get())
         for c in response.css('.code_or'):
             style_to_write.append(c.css('::text').get())
-        for c in response.css('.banner_picture, lazypreload.lazyloaded'):
-            img_to_write.append(c.css('img::attr(src)').get())
+        for c in response.css('.section.articles, article_list_container, article, banner_picture, img, lazypreload, lazyloaded'):
+            img_to_write.append(c.css('img::attr(srcset)').get())
         print(f"oi   {img_to_write}")
         for i in range(len(clock_to_write)):
             self.clocks.append({'name': clock_to_write[i], 'style': style_to_write[i], 'img': img_to_write[i]})
